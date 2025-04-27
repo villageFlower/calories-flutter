@@ -55,7 +55,10 @@ RUN yes | sdkmanager --licenses \
     && sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
 # Download Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git ${FLUTTER_HOME} -b stable \
+RUN mkdir -p ${FLUTTER_HOME} \
+    && curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.3-stable.tar.xz \
+    && tar xf flutter.tar.xz -C /opt \
+    && rm flutter.tar.xz \
     && flutter config --no-analytics \
     && flutter precache \
     && flutter doctor

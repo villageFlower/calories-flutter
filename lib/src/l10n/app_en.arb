@@ -1,0 +1,10 @@
+{
+  "appTitle": "Calories Tracker",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcomeMessage": "Welcome to Calories Tracker!",
+  "@welcomeMessage": {
+    "description": "The welcome message displayed on the home page"
+  }
+}
