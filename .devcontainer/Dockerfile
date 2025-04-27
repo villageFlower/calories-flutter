@@ -42,7 +42,7 @@ RUN mkdir -p ${ANDROID_SDK_ROOT} \
     && chown -R developer:developer ${ANDROID_SDK_ROOT} ${FLUTTER_HOME} /home/developer/.android
 
 # Download Flutter SDK as root
-RUN curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.3-stable.tar.xz \
+RUN curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.29.3-stable.tar.xz \
     && tar xf flutter.tar.xz -C /opt \
     && rm flutter.tar.xz \
     && chown -R developer:developer ${FLUTTER_HOME}
