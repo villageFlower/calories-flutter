@@ -34,11 +34,18 @@ RUN groupadd --gid 1000 developer \
     && echo developer ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/developer \
     && chmod 0440 /etc/sudoers.d/developer
 
-# Set up Android SDK
+# Set up Android SDK and Flutter directories
 RUN mkdir -p ${ANDROID_SDK_ROOT} \
+    && mkdir -p ${FLUTTER_HOME} \
     && mkdir -p /home/developer/.android \
     && touch /home/developer/.android/repositories.cfg \
-    && chown -R developer:developer ${ANDROID_SDK_ROOT} /home/developer/.android
+    && chown -R developer:developer ${ANDROID_SDK_ROOT} ${FLUTTER_HOME} /home/developer/.android
+
+# Download Flutter SDK as root
+RUN curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.3-stable.tar.xz \
+    && tar xf flutter.tar.xz -C /opt \
+    && rm flutter.tar.xz \
+    && chown -R developer:developer ${FLUTTER_HOME}
 
 USER developer
 WORKDIR /home/developer
@@ -54,12 +61,8 @@ RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools/latest \
 RUN yes | sdkmanager --licenses \
     && sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
-# Download Flutter SDK
-RUN mkdir -p ${FLUTTER_HOME} \
-    && curl -o flutter.tar.xz https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.3-stable.tar.xz \
-    && tar xf flutter.tar.xz -C /opt \
-    && rm flutter.tar.xz \
-    && flutter config --no-analytics \
+# Configure Flutter
+RUN flutter config --no-analytics \
     && flutter precache \
     && flutter doctor
 
